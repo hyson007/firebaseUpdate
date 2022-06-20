@@ -46,7 +46,5 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 	if err != nil {
 		log.Fatalln("firestore error: ", err)
 	}
-	// log.Println("write result: ", wr)
-
 	return nil
 }
