@@ -42,7 +42,7 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 		return errors.New("field is not valid")
 	}
 
-	wr, err := docRef.Update(ctx, []firestore.Update{updateObject})
+	_, err = docRef.Update(ctx, []firestore.Update{updateObject})
 	if err != nil {
 		log.Fatalln("firestore error: ", err)
 	}
