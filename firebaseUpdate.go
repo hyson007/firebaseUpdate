@@ -3,9 +3,11 @@ package firebaseUpdate
 import (
 	"context"
 	"errors"
+	"log"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -56,6 +58,32 @@ func GetRecord(collection string, docID string) (map[string]interface{}, error) 
 	}
 
 	return doc.Data(), nil
+}
+
+func GetRecords(collection string) ([]map[string]interface{}, error) {
+	res := []map[string]interface{}{}
+
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	collectRef := client.Collection(collection)
+
+	iter := collectRef.Documents(ctx)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Fatalln("error getting document: ", err)
+		}
+		res = append(res, doc.Data())
+	}
+
+	return res, nil
 }
 
 func UpdateRecord(collection string, docID string, field string, result bool) error {
