@@ -77,7 +77,9 @@ func GetRecords(collection string) ([]map[string]interface{}, error) {
 	for {
 		hold = make(map[string]interface{})
 		doc, err := iter.Next()
-		hold = doc.Data()
+		for k, v := range doc.Data() {
+			hold[k] = v
+		}
 		hold["id"] = doc.Ref.ID
 		if err == iterator.Done {
 			break
