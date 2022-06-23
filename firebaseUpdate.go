@@ -118,10 +118,14 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 		updateObject.Value = result
 	} else if field == "verifyEmailAt" {
 		updateObject.Path = "verifyEmailAt"
-		updateObject.Value = time.Now()
+		if result {
+			updateObject.Value = time.Now()
+		}
 	} else if field == "verifyPhoneAt" {
 		updateObject.Path = "verifyPhoneAt"
-		updateObject.Value = time.Now()
+		if result {
+			updateObject.Value = time.Now()
+		}
 	} else {
 		return errors.New("field is not valid")
 	}
