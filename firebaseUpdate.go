@@ -3,7 +3,6 @@ package firebaseUpdate
 import (
 	"context"
 	"errors"
-	"log"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -24,7 +23,21 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
 
+func DeleteRecord(collection string, docID string) error {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	collectRef := client.Collection(collection)
+	docRef := collectRef.Doc(docID)
+	_, err = docRef.Delete(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func GetRecord(collection string, docID string) (map[string]interface{}, error) {
@@ -72,7 +85,7 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 
 	_, err = docRef.Update(ctx, []firestore.Update{updateObject})
 	if err != nil {
-		log.Fatalln("firestore error: ", err)
+		return err
 	}
 	return nil
 }
