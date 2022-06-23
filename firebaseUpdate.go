@@ -10,14 +10,43 @@ import (
 	"google.golang.org/api/option"
 )
 
-func UpdateRecord(collection string, docID string, field string, result bool) error {
+var (
+	app *firebase.App
+	err error
+	ctx context.Context
+)
+
+func init() {
 	//firebase init
-	ctx := context.Background()
+	ctx = context.Background()
 	opt := option.WithCredentialsFile("./serviceAccount.json")
-	app, err := firebase.NewApp(ctx, nil, opt)
+	app, err = firebase.NewApp(ctx, nil, opt)
 	if err != nil {
-		return err
+		panic(err)
 	}
+
+}
+
+func GetRecord(collection string, docID string) (map[string]interface{}, error) {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	collectRef := client.Collection(collection)
+	docRef := collectRef.Doc(docID)
+
+	doc, err := docRef.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return doc.Data(), nil
+}
+
+func UpdateRecord(ctx context.Context, app *firebase.App, collection string,
+	docID string, field string, result bool) error {
 
 	client, err := app.Firestore(ctx)
 	if err != nil {
