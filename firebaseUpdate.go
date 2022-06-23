@@ -77,18 +77,21 @@ func GetRecords(collection string) ([]map[string]interface{}, error) {
 
 	iter := collectRef.Documents(ctx)
 	for {
-		hold = make(map[string]interface{})
+
 		doc, err := iter.Next()
-		for k, v := range doc.Data() {
-			hold[k] = v
-		}
-		hold["id"] = doc.Ref.ID
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
 			log.Fatalln("error getting document: ", err)
 		}
+		hold = make(map[string]interface{})
+
+		for k, v := range doc.Data() {
+			hold[k] = v
+		}
+		hold["id"] = doc.Ref.ID
+
 		res = append(res, hold)
 	}
 
@@ -111,7 +114,7 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 		updateObject.Path = "subEmailVerified"
 		updateObject.Value = result
 	} else if field == "phone" {
-		updateObject.Path = "subEmailVerified"
+		updateObject.Path = "subMobileNumberVerified"
 		updateObject.Value = result
 	} else if field == "IsProcessed" {
 		updateObject.Path = "IsProcessed"
