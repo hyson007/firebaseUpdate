@@ -44,6 +44,7 @@ func DeleteRecord(collection string, docID string) error {
 	return nil
 }
 
+//get record for a specific docID
 func GetRecord(collection string, docID string) (map[string]interface{}, error) {
 	client, err := app.Firestore(ctx)
 	if err != nil {
@@ -62,6 +63,7 @@ func GetRecord(collection string, docID string) (map[string]interface{}, error) 
 	return doc.Data(), nil
 }
 
+//get all records for a given collection
 func GetRecords(collection string) ([]map[string]interface{}, error) {
 	res := []map[string]interface{}{}
 
