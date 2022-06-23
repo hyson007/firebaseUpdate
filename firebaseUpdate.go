@@ -45,8 +45,7 @@ func GetRecord(collection string, docID string) (map[string]interface{}, error) 
 	return doc.Data(), nil
 }
 
-func UpdateRecord(ctx context.Context, app *firebase.App, collection string,
-	docID string, field string, result bool) error {
+func UpdateRecord(collection string, docID string, field string, result bool) error {
 
 	client, err := app.Firestore(ctx)
 	if err != nil {
