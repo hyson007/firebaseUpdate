@@ -13,9 +13,10 @@ import (
 )
 
 var (
-	app *firebase.App
-	err error
-	ctx context.Context
+	app  *firebase.App
+	err  error
+	ctx  context.Context
+	hold map[string]interface{}
 )
 
 func init() {
@@ -74,7 +75,7 @@ func GetRecords(collection string) ([]map[string]interface{}, error) {
 
 	iter := collectRef.Documents(ctx)
 	for {
-		var hold map[string]interface{}
+		hold = make(map[string]interface{})
 		doc, err := iter.Next()
 		hold = doc.Data()
 		hold["id"] = doc.Ref.ID
