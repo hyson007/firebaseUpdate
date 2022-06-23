@@ -108,10 +108,10 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 	} else if field == "IsProcessed" {
 		updateObject.Path = "IsProcessed"
 		updateObject.Value = result
-	} else if field == "verifyEmail" {
+	} else if field == "verifyEmailAt" {
 		updateObject.Path = "verifyEmailAt"
 		updateObject.Value = time.Now()
-	} else if field == "verifyPhone" {
+	} else if field == "verifyPhoneAt" {
 		updateObject.Path = "verifyPhoneAt"
 		updateObject.Value = time.Now()
 	} else {
