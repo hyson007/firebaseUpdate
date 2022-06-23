@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -107,6 +108,12 @@ func UpdateRecord(collection string, docID string, field string, result bool) er
 	} else if field == "IsProcessed" {
 		updateObject.Path = "IsProcessed"
 		updateObject.Value = result
+	} else if field == "verifyEmail" {
+		updateObject.Path = "verifyEmailAt"
+		updateObject.Value = time.Now()
+	} else if field == "verifyPhone" {
+		updateObject.Path = "verifyPhoneAt"
+		updateObject.Value = time.Now()
 	} else {
 		return errors.New("field is not valid")
 	}
