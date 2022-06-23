@@ -74,9 +74,9 @@ func GetRecords(collection string) ([]map[string]interface{}, error) {
 
 	iter := collectRef.Documents(ctx)
 	for {
-
+		var hold map[string]interface{}
 		doc, err := iter.Next()
-		hold := doc.Data()
+		hold = doc.Data()
 		hold["id"] = doc.Ref.ID
 		if err == iterator.Done {
 			break
